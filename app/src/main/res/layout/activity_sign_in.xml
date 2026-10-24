@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1E295B"
-    tools:context=".SignInActivity">
+    tools:context=".activity_sign_in">
 
     <!-- Header Section with Curved Bottom and App Logo Icon -->
     <RelativeLayout
@@ -190,7 +190,7 @@
                     app:cornerRadius="24dp"
                     app:icon="@android:drawable/ic_menu_help"
                     app:iconTint="#1E295B"
-                    app:iconGravity="text_start"
+                    app:iconGravity="textStart"
                     android:layout_marginBottom="32dp"/>
 
                 <!-- New here? Create an account Link -->
