@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "594921853048",
+    "project_id": "campus-super-app-eb991",
+    "storage_bucket": "campus-super-app-eb991.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594921853048:android:cc656c3a370e3bae5c5d8d",
+        "android_client_info": {
+          "package_name": "com.example.campussuperapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjAYbHDHDZmHI6BdKQEZxLnVpbaZvDZwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
