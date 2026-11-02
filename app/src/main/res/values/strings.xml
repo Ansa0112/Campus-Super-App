@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Campussuperapp</string>
+    <string-array name="program_array">
+        <item>BSSE</item>
+        <item>BSCS</item>
+        <item>BBAH</item>
+        <item>BCA</item>
+        <item>BCSE</item>
+        <item>BMCS</item>
+        <item>BSAF</item>
+        <item>BSAM</item>
+        <item>BSBA</item>
+        <item>BSBM</item>
+        <item>BSCE</item>
+        <item>BSCP</item>
+        <item>BSEE</item>
+        <item>BSEN</item>
+    </string-array>
 </resources>

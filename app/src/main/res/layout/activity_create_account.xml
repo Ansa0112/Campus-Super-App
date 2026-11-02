@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1E295B"
-    tools:context=".CreateAccountActivity">
+    tools:context=".activity_create_account">
 
     <!-- Header Section with Curved Bottom and Glowing Sun Graphic -->
     <RelativeLayout
@@ -135,6 +135,7 @@
                         android:gravity="center"/>
 
                     <TextView
+                        android:id="@+id/btnRoleAdmin"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -174,7 +175,7 @@
                         android:inputType="textPersonName"/>
                 </LinearLayout>
 
-                <!-- Input Field: Roll no. / Employee ID -->
+                <!-- Roll Number Container: Dropdown (Spinner) + Suffix Input -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -191,11 +192,20 @@
                         app:tint="#94A3B8"
                         android:contentDescription="ID Icon"/>
 
+                    <!-- Program Dropdown (Spinner) -->
+                    <Spinner
+                        android:id="@+id/spinnerProgram"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:background="@android:drawable/btn_dropdown"/>
+
+                    <!-- Roll No. Number Suffix -->
                     <EditText
-                        android:id="@+id/etRollNo"
+                        android:id="@+id/etRollNoSuffix"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Roll no. / Employee ID"
+                        android:hint="119"
                         android:textColor="#0F172A"
                         android:textColorHint="#94A3B8"
                         android:textSize="13sp"
@@ -225,7 +235,7 @@
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="University email"
+                        android:hint="University email (e.g. @students.fui.edu.pk)"
                         android:textColor="#0F172A"
                         android:textColorHint="#94A3B8"
                         android:textSize="13sp"
@@ -255,7 +265,7 @@
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Password"
+                        android:hint="Password (min 6 chars)"
                         android:textColor="#0F172A"
                         android:textColorHint="#94A3B8"
                         android:textSize="13sp"
