@@ -108,7 +108,7 @@ public class activity_sign_in extends AppCompatActivity {
                             Toast.makeText(activity_sign_in.this, "Sign In Successful!", Toast.LENGTH_SHORT).show();
 
                             // Navigate smoothly to Home Screen Activity
-                            Intent intent = new Intent(activity_sign_in.this, activity_home.class);
+                            Intent intent = new Intent(activity_sign_in.this, HomeActivity.class);
                             startActivity(intent);
                             finish(); // Finish current activity so user can't click back into login
                         }

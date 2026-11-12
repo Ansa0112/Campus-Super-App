@@ -164,7 +164,7 @@ public class activity_faculty_create_account extends AppCompatActivity {
                                     .addOnSuccessListener(aVoid -> {
                                         btnCreateFacultyAccount.setEnabled(true);
                                         Toast.makeText(activity_faculty_create_account.this, "Faculty Account Created Successfully!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(activity_faculty_create_account.this, activity_home.class));
+                                        startActivity(new Intent(activity_faculty_create_account.this, HomeActivity.class));
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {

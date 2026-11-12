@@ -153,13 +153,14 @@ public class activity_create_account extends AppCompatActivity {
                         if (firebaseUser != null) {
                             String userId = firebaseUser.getUid();
 
-                            // Prepare Firestore document data
+                            // Prepare Firestore document data with department included
                             Map<String, Object> userMap = new HashMap<>();
                             userMap.put("fullName", fullName);
                             userMap.put("rollNo", rollNo);
                             userMap.put("email", email);
                             userMap.put("uid", userId);
                             userMap.put("role", "Student");
+                            userMap.put("department", selectedProgram); // Saved so profile can load it!
 
                             // Save profile to Cloud Firestore
                             db.collection("Users").document(userId)
@@ -167,7 +168,7 @@ public class activity_create_account extends AppCompatActivity {
                                     .addOnSuccessListener(aVoid -> {
                                         btnCreateAccount.setEnabled(true);
                                         Toast.makeText(activity_create_account.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(activity_create_account.this, activity_home.class);
+                                        Intent intent = new Intent(activity_create_account.this, HomeActivity.class);
                                         startActivity(intent);
                                         finish();
                                     })

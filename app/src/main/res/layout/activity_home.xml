@@ -9,7 +9,7 @@
     android:background="#F8FAFC"
     tools:context=".HomeActivity">
 
-    <!-- Top Header Bar -->
+    <!-- Top Header Bar (Fully clickable with descendant focus control) -->
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
@@ -19,6 +19,10 @@
         android:paddingTop="20dp"
         android:paddingBottom="12dp"
         android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:descendantFocusability="blocksDescendants"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
