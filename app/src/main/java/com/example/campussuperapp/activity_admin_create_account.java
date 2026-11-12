@@ -40,7 +40,7 @@ public class activity_admin_create_account extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin_create_account);
 
-        // Window insets safe padding
+        // Window insets safe padding configuration
         View rootView = findViewById(R.id.main);
         if (rootView != null) {
             ViewCompat.setOnApplyWindowInsetsListener(rootView, (View v, WindowInsetsCompat insets) -> {
@@ -69,7 +69,7 @@ public class activity_admin_create_account extends AppCompatActivity {
         btnTabFaculty = findViewById(R.id.btnTabFaculty);
         btnTabAdmin = findViewById(R.id.btnTabAdmin);
 
-        // Tab click listener to turn the clicked tab blue and navigate
+        // Tab click listener to turn the clicked tab blue and navigate roles
         View.OnClickListener tabClickListener = v -> {
             // Reset all tabs to default unselected style
             btnTabStudent.setBackgroundResource(android.R.color.transparent);
@@ -103,7 +103,7 @@ public class activity_admin_create_account extends AppCompatActivity {
         if (btnTabFaculty != null) btnTabFaculty.setOnClickListener(tabClickListener);
         if (btnTabAdmin != null) btnTabAdmin.setOnClickListener(tabClickListener);
 
-        // Back button & Sign-in link
+        // Back button & Sign-in link actions
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
@@ -126,7 +126,7 @@ public class activity_admin_create_account extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-        // Validations
+        // Form Validation Checks
         if (TextUtils.isEmpty(fullName)) {
             etFullName.setError("Full name is required");
             etFullName.requestFocus();
@@ -145,8 +145,8 @@ public class activity_admin_create_account extends AppCompatActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(password)) {
-            etPassword.setError("Password is required");
+        if (TextUtils.isEmpty(password) || password.length() < 6) {
+            etPassword.setError("Password must be at least 6 characters");
             etPassword.requestFocus();
             return;
         }
@@ -157,7 +157,7 @@ public class activity_admin_create_account extends AppCompatActivity {
             return;
         }
 
-        if (!cbTerms.isChecked()) {
+        if (cbTerms == null || !cbTerms.isChecked()) {
             Toast.makeText(this, "Please accept the Terms of Use and Privacy Policy", Toast.LENGTH_LONG).show();
             return;
         }
@@ -168,25 +168,33 @@ public class activity_admin_create_account extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        String userId = mAuth.getCurrentUser().getUid();
+                        if (mAuth.getCurrentUser() != null) {
+                            String userId = mAuth.getCurrentUser().getUid();
 
-                        Map<String, Object> adminData = new HashMap<>();
-                        adminData.put("fullName", fullName);
-                        adminData.put("adminId", adminId);
-                        adminData.put("email", email);
-                        adminData.put("role", "Admin");
+                            Map<String, Object> adminData = new HashMap<>();
+                            adminData.put("fullName", fullName);
+                            adminData.put("adminId", adminId);
+                            adminData.put("email", email);
+                            adminData.put("uid", userId);
+                            adminData.put("role", "Admin");
 
-                        db.collection("Users").document(userId)
-                                .set(adminData)
-                                .addOnSuccessListener(aVoid -> {
-                                    btnSubmitApproval.setEnabled(true);
-                                    Toast.makeText(this, "Admin registration submitted for approval!", Toast.LENGTH_LONG).show();
-                                    finish();
-                                })
-                                .addOnFailureListener(e -> {
-                                    btnSubmitApproval.setEnabled(true);
-                                    Toast.makeText(this, "Database Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                });
+                            db.collection("Users").document(userId)
+                                    .set(adminData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        btnSubmitApproval.setEnabled(true);
+                                        Toast.makeText(this, "Admin Account Created Successfully!", Toast.LENGTH_SHORT).show();
+
+                                        // Navigate smoothly to HomeActivity and clear back stack
+                                        Intent intent = new Intent(activity_admin_create_account.this, HomeActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        btnSubmitApproval.setEnabled(true);
+                                        Toast.makeText(this, "Database Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    });
+                        }
                     } else {
                         btnSubmitApproval.setEnabled(true);
                         String error = task.getException() != null ? task.getException().getMessage() : "Registration failed";

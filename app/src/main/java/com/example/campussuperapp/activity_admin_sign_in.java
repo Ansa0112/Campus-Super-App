@@ -135,8 +135,10 @@ public class activity_admin_sign_in extends AppCompatActivity {
                                             if ("Admin".equalsIgnoreCase(role)) {
                                                 Toast.makeText(this, "Sign In Successful!", Toast.LENGTH_SHORT).show();
 
-                                                // TODO: Navigate to your Admin Dashboard Activity here
-                                                // startActivity(new Intent(this, activity_admin_dashboard.class));
+                                                // Navigate smoothly to HomeActivity and clear stack
+                                                Intent intent = new Intent(activity_admin_sign_in.this, HomeActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
                                                 finish();
                                             } else {
                                                 mAuth.signOut();
