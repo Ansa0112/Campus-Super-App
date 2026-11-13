@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Main Home Activity (FIXED: points to HomeActivity) -->
+        <!-- Main Home Activity -->
         <activity
             android:name=".HomeActivity"
             android:exported="false"

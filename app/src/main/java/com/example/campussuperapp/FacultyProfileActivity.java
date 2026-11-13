@@ -54,11 +54,11 @@ public class FacultyProfileActivity extends AppCompatActivity {
         // 3. Load logged-in faculty profile dynamically from Firestore
         loadFacultyProfile();
 
-        // 4. Handle Sign Out option
+        // 4. Handle Sign Out option -> Redirect to Faculty Create Account screen
         if (menuSignOut != null) {
             menuSignOut.setOnClickListener(v -> {
                 mAuth.signOut(); // Ends active session
-                Intent intent = new Intent(FacultyProfileActivity.this, MainActivity.class);
+                Intent intent = new Intent(FacultyProfileActivity.this, activity_faculty_create_account.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
@@ -81,41 +81,41 @@ public class FacultyProfileActivity extends AppCompatActivity {
 
             // Fetch specific user document from Firestore using the faculty's UID
             db.collection("Users").document(uid)
-                .get()
-                .addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        // Extract fields stored during faculty registration
-                        String fullName = document.getString("fullName");
-                        String employeeId = document.getString("employeeId");
-                        String department = document.getString("department");
-                        String email = document.getString("email");
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Extract fields stored during faculty registration
+                                String fullName = document.getString("fullName");
+                                String employeeId = document.getString("employeeId");
+                                String department = document.getString("department");
+                                String email = document.getString("email");
 
-                        // Update UI dynamically with fetched data or fallback defaults
-                        if (tvProfileName != null) {
-                            tvProfileName.setText(fullName != null && !fullName.isEmpty() ? fullName : "N/A");
+                                // Update UI dynamically with fetched data or fallback defaults
+                                if (tvProfileName != null) {
+                                    tvProfileName.setText(fullName != null && !fullName.isEmpty() ? fullName : "N/A");
+                                }
+                                if (tvEmployeeId != null) {
+                                    tvEmployeeId.setText(employeeId != null && !employeeId.isEmpty() ? employeeId : "N/A");
+                                }
+                                if (tvDepartment != null) {
+                                    tvDepartment.setText(department != null && !department.isEmpty() ? department : "N/A");
+                                }
+                                if (tvEmail != null && email != null) {
+                                    tvEmail.setText(email);
+                                }
+                            } else {
+                                Toast.makeText(FacultyProfileActivity.this, "Profile data not found.", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(FacultyProfileActivity.this, "Failed to load profile.", Toast.LENGTH_SHORT).show();
                         }
-                        if (tvEmployeeId != null) {
-                            tvEmployeeId.setText(employeeId != null && !employeeId.isEmpty() ? employeeId : "N/A");
-                        }
-                        if (tvDepartment != null) {
-                            tvDepartment.setText(department != null && !department.isEmpty() ? department : "N/A");
-                        }
-                        if (tvEmail != null && email != null) {
-                            tvEmail.setText(email);
-                        }
-                    } else {
-                        Toast.makeText(FacultyProfileActivity.this, "Profile data not found.", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(FacultyProfileActivity.this, "Failed to load profile.", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    });
         } else {
             // Redirect to login if no active user session exists
-            Toast.makeText(this, "No active session. Redirecting to login...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(FacultyProfileActivity.this, MainActivity.class);
+            Toast.makeText(this, "No active session. Redirecting...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(FacultyProfileActivity.this, activity_faculty_create_account.class);
             startActivity(intent);
             finish();
         }

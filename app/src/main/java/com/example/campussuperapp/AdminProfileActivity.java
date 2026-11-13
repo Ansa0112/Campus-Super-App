@@ -53,11 +53,11 @@ public class AdminProfileActivity extends AppCompatActivity {
         // 3. Load logged-in admin profile dynamically from Firestore
         loadAdminProfile();
 
-        // 4. Handle Sign Out option
+        // 4. Handle Sign Out option -> Redirect to Admin Create Account screen
         if (menuSignOut != null) {
             menuSignOut.setOnClickListener(v -> {
                 mAuth.signOut();
-                Intent intent = new Intent(AdminProfileActivity.this, MainActivity.class);
+                Intent intent = new Intent(AdminProfileActivity.this, activity_admin_create_account.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
@@ -79,34 +79,34 @@ public class AdminProfileActivity extends AppCompatActivity {
 
             // Fetch specific user document from Firestore using the admin's UID
             db.collection("Users").document(uid)
-                .get()
-                .addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        String fullName = document.getString("fullName");
-                        String adminId = document.getString("adminId"); // Stored during admin registration
-                        String email = document.getString("email");
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String fullName = document.getString("fullName");
+                                String adminId = document.getString("adminId"); // Stored during admin registration
+                                String email = document.getString("email");
 
-                        if (tvProfileName != null) {
-                            tvProfileName.setText(fullName != null && !fullName.isEmpty() ? fullName : "N/A");
+                                if (tvProfileName != null) {
+                                    tvProfileName.setText(fullName != null && !fullName.isEmpty() ? fullName : "N/A");
+                                }
+                                if (tvAdminId != null) {
+                                    tvAdminId.setText(adminId != null && !adminId.isEmpty() ? adminId : "N/A");
+                                }
+                                if (tvEmail != null && email != null) {
+                                    tvEmail.setText(email);
+                                }
+                            } else {
+                                Toast.makeText(AdminProfileActivity.this, "Profile data not found.", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(AdminProfileActivity.this, "Failed to load profile.", Toast.LENGTH_SHORT).show();
                         }
-                        if (tvAdminId != null) {
-                            tvAdminId.setText(adminId != null && !adminId.isEmpty() ? adminId : "N/A");
-                        }
-                        if (tvEmail != null && email != null) {
-                            tvEmail.setText(email);
-                        }
-                    } else {
-                        Toast.makeText(AdminProfileActivity.this, "Profile data not found.", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(AdminProfileActivity.this, "Failed to load profile.", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    });
         } else {
-            Toast.makeText(this, "No active session. Redirecting to login...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(AdminProfileActivity.this, MainActivity.class);
+            Toast.makeText(this, "No active session. Redirecting...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AdminProfileActivity.this, activity_admin_create_account.class);
             startActivity(intent);
             finish();
         }
