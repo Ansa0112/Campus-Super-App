@@ -33,7 +33,7 @@ public class activity_faculty_create_account extends AppCompatActivity {
     private Spinner spinnerDepartment;
     private CheckBox cbTerms;
     private MaterialButton btnCreateFacultyAccount;
-    private TextView tvSignInLink, btnRoleStudentTab;
+    private TextView tvSignInLink, btnRoleStudentTab, btnRoleAdminTab;
     private ImageButton btnBack;
 
     @Override
@@ -65,16 +65,50 @@ public class activity_faculty_create_account extends AppCompatActivity {
         tvSignInLink = findViewById(R.id.tvSignInLink);
         btnBack = findViewById(R.id.btnBack);
         btnRoleStudentTab = findViewById(R.id.btnRoleStudentTab);
+        btnRoleAdminTab = findViewById(R.id.btnRoleAdminTab);
 
-        // Populate Department Spinner
-        String[] departments = {"Computer Science", "Software Engineering", "Electrical Engineering", "Management Sciences", "Basic Sciences"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, departments);
+        // Official FUSST Departments & Faculties List
+        String[] departments = {
+                // Faculty of Engineering & IT
+                "Department of Computer Science",
+                "Department of Software Engineering",
+                "Department of Electrical Engineering",
+                "Department of Computer Engineering",
+                "Department of Engineering Technology",
+
+                // Faculty of Management Sciences
+                "Department of Management Sciences",
+                "Department of Accounting & Finance",
+                "Department of Business Analytics & FinTech",
+
+                // Faculty of Arts & Social Sciences
+                "Department of Computer Arts",
+                "Department of Media & Communication Studies",
+                "Department of Psychology",
+                "Department of English"
+        };
+
+        // Use custom navy theme layout to display the dropdown arrow
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.spinner_item_theme,
+                departments
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDepartment.setAdapter(adapter);
 
-        // Switch back to Student Create Account screen
+        // Switch to Student Create Account screen
         if (btnRoleStudentTab != null) {
             btnRoleStudentTab.setOnClickListener(v -> {
                 startActivity(new Intent(activity_faculty_create_account.this, activity_create_account.class));
+                finish();
+            });
+        }
+
+        // Switch to Admin Create Account screen
+        if (btnRoleAdminTab != null) {
+            btnRoleAdminTab.setOnClickListener(v -> {
+                startActivity(new Intent(activity_faculty_create_account.this, activity_admin_create_account.class));
                 finish();
             });
         }
@@ -115,7 +149,7 @@ public class activity_faculty_create_account extends AppCompatActivity {
             return;
         }
 
-        // Strictly enforce that the email ends with @faculty.fui.edu.pk and show explicit error if not
+        // Strictly enforce faculty email domain
         if (!email.endsWith("@faculty.fui.edu.pk")) {
             etEmail.setError("Faculty email must end with @faculty.fui.edu.pk");
             etEmail.requestFocus();

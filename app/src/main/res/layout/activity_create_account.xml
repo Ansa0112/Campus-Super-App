@@ -100,7 +100,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:paddingHorizontal="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="180dp">
 
                 <!-- Role Selector Bar (Student, Faculty, Admin) -->
                 <LinearLayout
@@ -175,7 +177,7 @@
                         android:inputType="textPersonName"/>
                 </LinearLayout>
 
-                <!-- Roll Number Container: Dropdown (Spinner) + Suffix Input -->
+                <!-- Roll Number Container: Theme-Matched Dropdown (Spinner) + Suffix Input -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -192,25 +194,34 @@
                         app:tint="#94A3B8"
                         android:contentDescription="ID Icon"/>
 
-                    <!-- Program Dropdown (Spinner) -->
+                    <!-- Clean Theme-Matched Program Dropdown (Spinner) -->
                     <Spinner
                         android:id="@+id/spinnerProgram"
-                        android:layout_width="120dp"
+                        android:layout_width="135dp"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:background="@android:drawable/btn_dropdown"/>
+                        android:layout_marginStart="6dp"
+                        android:background="@null"
+                        android:popupBackground="#FFFFFF"
+                        android:spinnerMode="dropdown" />
+
+                    <!-- Subtle Vertical Divider -->
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="22dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:background="#CBD5E1" />
 
                     <!-- Roll No. Number Suffix -->
                     <EditText
                         android:id="@+id/etRollNoSuffix"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:hint="119"
                         android:textColor="#0F172A"
                         android:textColorHint="#94A3B8"
                         android:textSize="13sp"
                         android:background="@null"
-                        android:layout_marginStart="10dp"
                         android:inputType="text"/>
                 </LinearLayout>
 

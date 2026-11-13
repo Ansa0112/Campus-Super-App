@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -30,6 +31,7 @@ public class activity_create_account extends AppCompatActivity {
     private FirebaseFirestore db;
     private EditText etFullName, etRollNoSuffix, etEmail, etPassword, etConfirmPassword;
     private Spinner spinnerProgram;
+    private CheckBox cbTerms;
     private MaterialButton btnCreateAccount;
     private TextView tvSignInLink, btnRoleFaculty, btnRoleAdmin;
     private ImageButton btnBack;
@@ -53,22 +55,52 @@ public class activity_create_account extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Bind all views to match your advanced XML layout IDs perfectly
+        // Bind all views
         etFullName = findViewById(R.id.etFullName);
         spinnerProgram = findViewById(R.id.spinnerProgram);
         etRollNoSuffix = findViewById(R.id.etRollNoSuffix);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        cbTerms = findViewById(R.id.cbTerms);
         btnCreateAccount = findViewById(R.id.btnCreateAccount);
         tvSignInLink = findViewById(R.id.tvSignInLink);
         btnBack = findViewById(R.id.btnBack);
         btnRoleFaculty = findViewById(R.id.btnRoleFaculty);
         btnRoleAdmin = findViewById(R.id.btnRoleAdmin);
 
-        // Populate the Program Spinner (e.g., BCS, BSE, BBA, etc.)
-        String[] programs = {"BCS", "BSE", "BBA", "BSEE", "BSAF"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, programs);
+        // Official FUSST Undergraduate Programs List
+        String[] programs = {
+                // Faculty of Engineering & IT
+                "BCS",
+                "BSE",
+                "BSEE",
+                "BSCE",
+                "BSBET",
+                "BSIET",
+
+                // Faculty of Management Sciences
+                "BBA",
+                "BSAF",
+                "BS-FINTECH",
+                "BS-BA",
+                "BS-AVM",
+                "BS-THM",
+
+                // Faculty of Arts & Social Sciences
+                "BCA",
+                "BSMC",
+                "BS-PSY",
+                "BS-ENG"
+        };
+
+        // Use the custom navy & white theme layout for the spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.spinner_item_theme,
+                programs
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerProgram.setAdapter(adapter);
 
         // Switch to Faculty Create Account screen when Faculty tab is clicked
@@ -143,6 +175,11 @@ public class activity_create_account extends AppCompatActivity {
             return;
         }
 
+        if (cbTerms != null && !cbTerms.isChecked()) {
+            Toast.makeText(this, "Please agree to the Terms of Use and Privacy Policy", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         btnCreateAccount.setEnabled(false);
 
         // Create user with Firebase Auth
@@ -160,7 +197,7 @@ public class activity_create_account extends AppCompatActivity {
                             userMap.put("email", email);
                             userMap.put("uid", userId);
                             userMap.put("role", "Student");
-                            userMap.put("department", selectedProgram); // Saved so profile can load it!
+                            userMap.put("department", selectedProgram);
 
                             // Save profile to Cloud Firestore
                             db.collection("Users").document(userId)

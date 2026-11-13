@@ -1,4 +1,3 @@
-
 package com.example.campussuperapp;
 
 import android.graphics.Color;

@@ -48,11 +48,11 @@ public class StudentProfileActivity extends AppCompatActivity {
             );
             startActivity(intent);
         });
-        // 4. Handle Sign Out option
+        // 4. Handle Sign Out option -> Redirect to Student Create Account screen
         if (menuSignOut != null) {
             menuSignOut.setOnClickListener(v -> {
                 mAuth.signOut();
-                Intent intent = new Intent(StudentProfileActivity.this, MainActivity.class);
+                Intent intent = new Intent(StudentProfileActivity.this, activity_create_account.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
@@ -106,8 +106,8 @@ public class StudentProfileActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            Toast.makeText(this, "No active session. Redirecting to login...", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(StudentProfileActivity.this, MainActivity.class);
+            Toast.makeText(this, "No active session. Redirecting...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(StudentProfileActivity.this, activity_create_account.class);
             startActivity(intent);
             finish();
         }

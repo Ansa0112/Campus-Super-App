@@ -9,7 +9,7 @@
     android:background="#1E295B"
     tools:context=".activity_faculty_create_account">
 
-    <!-- Header Section -->
+    <!-- Header Section with Curved Bottom and Glowing Sun Graphic -->
     <RelativeLayout
         android:id="@+id/headerArea"
         android:layout_width="match_parent"
@@ -22,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Straight White Back Arrow -->
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="28dp"
@@ -30,6 +31,32 @@
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="Back"
             app:tint="#FFFFFF" />
+
+        <!-- Container for the Soft Blue Glow and Yellow Sun -->
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-20dp"
+            android:layout_marginEnd="-20dp">
+
+            <!-- Soft Blue Glowing Aura Shape -->
+            <View
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_header_blob" />
+
+            <!-- Yellow Sun Circle overlapping it -->
+            <View
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="19dp"
+                android:layout_marginBottom="43dp"
+                android:background="@drawable/bg_yellow_circle" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tvTitle"
@@ -73,9 +100,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:paddingHorizontal="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="180dp">
 
-                <!-- Role Selector Bar (Student / Faculty Toggle) -->
+                <!-- Role Selector Bar (Student, Faculty, Admin) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -108,6 +137,7 @@
                         android:background="@drawable/bg_role_selected"/>
 
                     <TextView
+                        android:id="@+id/btnRoleAdminTab"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -196,10 +226,13 @@
 
                     <Spinner
                         android:id="@+id/spinnerDepartment"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:background="@android:drawable/btn_dropdown"/>
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@null"
+                        android:popupBackground="#FFFFFF"
+                        android:spinnerMode="dropdown" />
                 </LinearLayout>
 
                 <!-- Input Field: University email -->
@@ -223,7 +256,7 @@
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="University email"
+                        android:hint="University email (e.g. @faculty.fui.edu.pk)"
                         android:textColor="#0F172A"
                         android:textColorHint="#94A3B8"
                         android:textSize="13sp"
