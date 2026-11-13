@@ -2,6 +2,7 @@ package com.example.campussuperapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,16 @@ public class StudentProfileActivity extends AppCompatActivity {
 
         // 3. Load user profile data dynamically
         loadLoggedInUserProfile();
+//my complaints activity
+        View menuMyComplaints = findViewById(R.id.menuMyComplaints);
 
+        menuMyComplaints.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    StudentProfileActivity.this,
+                    MyComplaintsActivity.class
+            );
+            startActivity(intent);
+        });
         // 4. Handle Sign Out option
         if (menuSignOut != null) {
             menuSignOut.setOnClickListener(v -> {

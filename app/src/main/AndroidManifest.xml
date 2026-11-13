@@ -33,12 +33,28 @@
             android:name=".HomeActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <!--Admin Home Activity-->
+        <activity
+            android:name=".AdminHomeActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- Complaints Activity -->
         <activity
             android:name=".ComplaintsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".MyComplaintsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <!--Admin Complaints Activity-->
+        <activity
+            android:name=".AdminComplaintsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- Profile Activities -->
         <activity
@@ -51,6 +67,10 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AdminProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AdminStatisticsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
@@ -83,6 +103,7 @@
             android:name=".activity_admin_sign_in"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
 
     </application>
 

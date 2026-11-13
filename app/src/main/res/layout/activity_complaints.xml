@@ -1,170 +1,370 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/complaintsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#F8FAFC">
 
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/complaintsHeader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:orientation="vertical"
-        android:padding="20dp"
         android:background="#1E295B"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:paddingStart="22dp"
+        android:paddingEnd="22dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CAMPUS SUPPORT"
-            android:textColor="#CBD5E1"
+            android:layout_marginTop="20dp"
+            android:textColor="#BFDBFE"
             android:textSize="12sp"
-            android:letterSpacing="0.08" />
+            android:textStyle="bold"
+            android:letterSpacing="0.12" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Complaints &amp; Issues"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Report a problem and track its progress."
+            android:layout_marginTop="8dp"
+            android:text="Report a campus problem so the right team can address it."
             android:textColor="#E2E8F0"
             android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            android:lineSpacingExtra="3dp" />
 
     </LinearLayout>
 
+
+
+    <!-- Scrollable content adapts to different screen heights -->
     <ScrollView
-        android:layout_width="0dp"
+
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true"
         android:clipToPadding="false"
-        android:padding="20dp"
-        app:layout_constraintTop_toBottomOf="@id/complaintsHeader"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:overScrollMode="ifContentScrolls"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Submit a Complaint"
-                android:textColor="#0F172A"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp" />
+            >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Complaint title *"
-                android:textColor="#334155"
-                android:textStyle="bold"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/etComplaintTitle"
+            <!-- Form card -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="e.g. Broken classroom projector"
-                android:inputType="textCapSentences"
-                android:singleLine="true"
-                android:minHeight="52dp"
-                android:padding="12dp"
-                android:background="@android:drawable/edit_text"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="16dp" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_complaint_card"
+                android:padding="18dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category *"
-                android:textColor="#334155"
-                android:textStyle="bold"
-                android:textSize="13sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Submit a complaint"
+                    android:textColor="#1E295B"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spComplaintCategory"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@android:drawable/btn_dropdown"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Please provide accurate details."
+                    android:textColor="#64748B"
+                    android:textSize="13sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description *"
-                android:textColor="#334155"
-                android:textStyle="bold"
-                android:textSize="13sp" />
+                <!-- Complaint title -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Complaint title *"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/etComplaintDescription"
-                android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:hint="Explain the issue and where it occurred..."
-                android:gravity="top|start"
-                android:inputType="textCapSentences|textMultiLine"
-                android:padding="12dp"
-                android:background="@android:drawable/edit_text"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="20dp" />
+                <EditText
+                    android:id="@+id/etComplaintTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="e.g. Internet not working"
+                    android:inputType="textCapSentences"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColor="#0F172A"
+                    android:textColorHint="#94A3B8"
+                    android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/btnSubmitComplaint"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:text="Submit Complaint"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:backgroundTint="#2563EB"
-                android:textColor="#FFFFFF" />
+                <!-- Category -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Category *"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="My Complaints"
-                android:textColor="#0F172A"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:layout_marginTop="28dp"
-                android:layout_marginBottom="12dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
 
-            <TextView
-                android:id="@+id/tvComplaintsEmpty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Your submitted complaints will appear here."
-                android:textColor="#64748B"
-                android:textSize="14sp"
-                android:padding="16dp"
-                android:gravity="center" />
+                    <ImageView
+                        android:id="@+id/ivCategoryIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_category"
+                        app:tint="#1E295B"
+                        android:importantForAccessibility="no" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvComplaints"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                    <Spinner
+                        android:id="@+id/spComplaintCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/ivCategoryIcon"
+                        android:layout_toStartOf="@+id/ivCategoryDropdownArrow"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="Select complaint category"
+                        android:popupBackground="@drawable/bg_dropdown_popup"
+                        android:dropDownVerticalOffset="4dp"
+                        android:spinnerMode="dropdown" />
+
+                    <ImageView
+                        android:id="@+id/ivCategoryDropdownArrow"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_down"
+                        app:tint="#64748B"
+                        android:importantForAccessibility="no" />
+                </RelativeLayout>
+
+                <!-- Severity -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Severity *"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
+
+                    <ImageView
+                        android:id="@+id/ivSeverityIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_severity"
+                        app:tint="#1E295B"
+                        android:importantForAccessibility="no" />
+
+                    <Spinner
+                        android:id="@+id/spComplaintSeverity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/ivSeverityIcon"
+                        android:layout_toStartOf="@+id/ivSeverityDropdownArrow"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="Select complaint severity"
+                        android:popupBackground="@drawable/bg_dropdown_popup"
+                        android:dropDownVerticalOffset="4dp"
+                        android:spinnerMode="dropdown" />
+
+                    <ImageView
+                        android:id="@+id/ivSeverityDropdownArrow"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_down"
+                        app:tint="#64748B"
+                        android:importantForAccessibility="no" />
+                </RelativeLayout>
+
+                <!-- Number of affected users -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Number of affected users *"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etAffectedUsers"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="e.g. 25"
+                    android:inputType="number"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColor="#0F172A"
+                    android:textColorHint="#94A3B8"
+                    android:textSize="14sp" />
+
+                <!-- Location -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Campus location *"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
+
+                    <ImageView
+                        android:id="@+id/ivLocationIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_location"
+                        app:tint="#1E295B"
+                        android:importantForAccessibility="no" />
+
+                    <Spinner
+                        android:id="@+id/spComplaintLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/ivLocationIcon"
+                        android:layout_toStartOf="@+id/ivLocationDropdownArrow"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="Select campus location"
+                        android:popupBackground="@drawable/bg_dropdown_popup"
+                        android:dropDownVerticalOffset="4dp"
+                        android:spinnerMode="dropdown" />
+
+                    <ImageView
+                        android:id="@+id/ivLocationDropdownArrow"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_down"
+                        app:tint="#64748B"
+                        android:importantForAccessibility="no" />
+                </RelativeLayout>
+
+                <!-- Description -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description *"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etComplaintDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="22dp"
+                    android:background="@drawable/bg_input_field"
+                    android:gravity="top|start"
+                    android:hint="Explain the problem and any relevant details..."
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:padding="14dp"
+                    android:textColor="#0F172A"
+                    android:textColorHint="#94A3B8"
+                    android:textSize="14sp" />
+
+                <!-- Improved submit button -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSubmitComplaint"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_submit_complaint"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Submit Complaint"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Local validation / priority result -->
+                <TextView
+                    android:id="@+id/tvPriorityResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="#EFF6FF"
+                    android:padding="14dp"
+                    android:textColor="#1E3A8A"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
+
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

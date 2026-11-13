@@ -16,12 +16,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class AdminProfileActivity extends AppCompatActivity {
 
     private TextView tvProfileName, tvProfileEmailHeader, tvAdminId, tvEmail;
+    private TextView tvOpenIssuesCount, tvUrgentCount;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private ListenerRegistration complaintsListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,18 @@ public class AdminProfileActivity extends AppCompatActivity {
         tvProfileEmailHeader = findViewById(R.id.tvProfileEmailHeader);
         tvAdminId = findViewById(R.id.tvAdminId);
         tvEmail = findViewById(R.id.tvEmail);
+        tvOpenIssuesCount = findViewById(R.id.tvOpenIssuesCount);
+        tvUrgentCount = findViewById(R.id.tvUrgentCount);
+
+        LinearLayout menuStatistics = findViewById(R.id.menuStatistics);
         LinearLayout menuSignOut = findViewById(R.id.menuSignOut);
+
+        if (menuStatistics != null) {
+            menuStatistics.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminProfileActivity.this, AdminStatisticsActivity.class);
+                startActivity(intent);
+            });
+        }
 
         // 2. Initialize Firebase instances
         mAuth = FirebaseAuth.getInstance();
@@ -53,7 +68,10 @@ public class AdminProfileActivity extends AppCompatActivity {
         // 3. Load logged-in admin profile dynamically from Firestore
         loadAdminProfile();
 
-        // 4. Handle Sign Out option
+        // 4. Listen to real-time complaint stats (Open issues & Urgent)
+        listenToComplaintStats();
+
+        // 5. Handle Sign Out option
         if (menuSignOut != null) {
             menuSignOut.setOnClickListener(v -> {
                 mAuth.signOut();
@@ -109,6 +127,48 @@ public class AdminProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(AdminProfileActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void listenToComplaintStats() {
+        complaintsListener = db.collection("complaints")
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null || querySnapshot == null) {
+                        if (tvOpenIssuesCount != null) tvOpenIssuesCount.setText("0");
+                        if (tvUrgentCount != null) tvUrgentCount.setText("0");
+                        return;
+                    }
+
+                    int openIssues = 0;
+                    int urgentCount = 0;
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String status = doc.getString("status");
+                        String severity = doc.getString("severity");
+
+                        if (status != null && status.equalsIgnoreCase("Pending")) {
+                            openIssues++;
+                        }
+
+                        if (severity != null && (severity.equalsIgnoreCase("Critical") || severity.equalsIgnoreCase("High"))) {
+                            urgentCount++;
+                        }
+                    }
+
+                    if (tvOpenIssuesCount != null) {
+                        tvOpenIssuesCount.setText(String.valueOf(openIssues));
+                    }
+                    if (tvUrgentCount != null) {
+                        tvUrgentCount.setText(String.valueOf(urgentCount));
+                    }
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (complaintsListener != null) {
+            complaintsListener.remove();
         }
     }
 }

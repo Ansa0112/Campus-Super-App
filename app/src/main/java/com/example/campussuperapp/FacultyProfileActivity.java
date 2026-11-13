@@ -54,6 +54,16 @@ public class FacultyProfileActivity extends AppCompatActivity {
         // 3. Load logged-in faculty profile dynamically from Firestore
         loadFacultyProfile();
 
+        //my complaints activity
+        View menuMyComplaints = findViewById(R.id.menuMyComplaints);
+
+        menuMyComplaints.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    FacultyProfileActivity.this,
+                    MyComplaintsActivity.class
+            );
+            startActivity(intent);
+        });
         // 4. Handle Sign Out option
         if (menuSignOut != null) {
             menuSignOut.setOnClickListener(v -> {

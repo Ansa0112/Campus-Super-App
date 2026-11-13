@@ -136,7 +136,7 @@ public class activity_admin_sign_in extends AppCompatActivity {
                                                 Toast.makeText(this, "Sign In Successful!", Toast.LENGTH_SHORT).show();
 
                                                 // Navigate smoothly to HomeActivity and clear stack
-                                                Intent intent = new Intent(activity_admin_sign_in.this, HomeActivity.class);
+                                                Intent intent = new Intent(activity_admin_sign_in.this, AdminHomeActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
                                                 finish();
