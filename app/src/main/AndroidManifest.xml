@@ -15,7 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Campussuperapp">
+        <activity android:name=".announcements.AnnouncementsActivity" android:exported="false" />
+        <activity android:name=".announcements.AnnouncementDetailActivity" android:exported="false" />
+        <activity android:name=".announcements.CreateAnnouncementActivity" android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
+        <activity android:name=".events.EventsActivity" android:exported="false" />
+        <activity android:name=".events.EventDetailActivity" android:exported="false" />
+        <activity android:name=".events.CreateEventActivity" android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <!-- Launcher Activity (Starts App) -->
         <activity
             android:name=".activity_create_account"

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Colours for the Announcements + Events modules (prefixed "ae_" so they never clash
+  with your teammates' colours). To match the app theme exactly, change these hex values
+  to the same ones your team uses in the sign-in / home screens.
+-->
+<resources>
+    <color name="ae_navy">#1F2A5C</color>
+    <color name="ae_navy_dark">#141C45</color>
+    <color name="ae_accent">#F5B700</color>
+    <color name="ae_bg">#F4F6FB</color>
+    <color name="ae_card">#FFFFFF</color>
+    <color name="ae_text">#1B2250</color>
+    <color name="ae_text_secondary">#6B7390</color>
+    <color name="ae_border">#DDE2F0</color>
+    <color name="ae_red">#D93B3B</color>
+    <color name="ae_green">#1E9E6A</color>
+    <color name="ae_orange">#F08A24</color>
+</resources>
