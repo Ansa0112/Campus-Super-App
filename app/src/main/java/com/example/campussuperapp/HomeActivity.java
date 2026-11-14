@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +18,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // "?" button -> Contact Us fragment
+        findViewById(R.id.btnHelp).setOnClickListener(v -> openFragment(new ContactFragment()));
 
         // 1. Verify HomeActivity successfully loaded
         Toast.makeText(this, "HomeActivity Loaded!", Toast.LENGTH_SHORT).show();
@@ -84,5 +88,13 @@ public class HomeActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    private void openFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
