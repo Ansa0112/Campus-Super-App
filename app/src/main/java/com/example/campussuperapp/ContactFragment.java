@@ -2,6 +2,7 @@ package com.example.campussuperapp;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,11 +55,10 @@ public class ContactFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Status bar, navigation bar aur keyboard ke liye jagah chhodo
+        // Sirf status bar ki jagah chhodo. Keyboard aur bottom nav HomeActivity sambhalti hai.
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
-            Insets bars = insets.getInsets(
-                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
-            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
+            v.setPadding(0, bars.top, 0, 0);
             return insets;
         });
 
@@ -65,6 +66,30 @@ public class ContactFragment extends Fragment {
         etEmail = view.findViewById(R.id.etEmail);
         etMessage = view.findViewById(R.id.etMessage);
         btnSend = view.findViewById(R.id.btnSendMessage);
+
+        // ---------- Keyboard aaye to jahan likh rahe hon wo field upar aaye ----------
+        final ScrollView scroll = view.findViewById(R.id.scrollContact);
+        if (scroll != null) {
+            // 1) Keyboard khulne se ScrollView chhota hota hai -> focused field dikhao
+            scroll.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+                View focused = scroll.findFocus();
+                if (focused instanceof EditText) {
+                    scrollToView(scroll, focused);
+                }
+            });
+
+            // 2) Field par click/focus hone par bhi dikhao
+            View.OnFocusChangeListener onFocus = (field, hasFocus) -> {
+                if (hasFocus) {
+                    field.postDelayed(() -> {
+                        if (isAdded()) scrollToView(scroll, field);
+                    }, 350);
+                }
+            };
+            if (etName != null) etName.setOnFocusChangeListener(onFocus);
+            if (etEmail != null) etEmail.setOnFocusChangeListener(onFocus);
+            if (etMessage != null) etMessage.setOnFocusChangeListener(onFocus);
+        }
 
         // Campus information card
         TextView tvAddress = view.findViewById(R.id.tvAddress);
@@ -114,15 +139,37 @@ public class ContactFragment extends Fragment {
                     launch(new Intent(Intent.ACTION_VIEW, Uri.parse(SATELLITE_MAP_URL))));
         }
 
-        // Emergency banner -> dial emergency number
+        // Emergency banner -> Emergency fragment
         View cardEmergency = view.findViewById(R.id.cardEmergency);
         if (cardEmergency != null) {
-            cardEmergency.setOnClickListener(dialUan);
+            cardEmergency.setOnClickListener(v ->
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new EmergencyFragment())
+                            .addToBackStack(null)
+                            .commit());
         }
 
         // Send message
         if (btnSend != null) {
             btnSend.setOnClickListener(v -> sendMessage());
+        }
+    }
+
+    // Diya hua view ScrollView ke visible hisse mein le aata hai
+    private void scrollToView(ScrollView scroll, View target) {
+        Rect r = new Rect();
+        target.getDrawingRect(r);
+        scroll.offsetDescendantRectToMyCoords(target, r);
+
+        int margin = 160; // field ke neeche thodi jagah, taake Send button bhi nazar aaye
+        int visibleTop = scroll.getScrollY();
+        int visibleBottom = visibleTop + scroll.getHeight();
+
+        if (r.bottom + margin > visibleBottom) {
+            scroll.smoothScrollTo(0, r.bottom + margin - scroll.getHeight());
+        } else if (r.top - margin < visibleTop) {
+            scroll.smoothScrollTo(0, Math.max(0, r.top - margin));
         }
     }
 
