@@ -78,6 +78,10 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".TimetableActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".AdminStatisticsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

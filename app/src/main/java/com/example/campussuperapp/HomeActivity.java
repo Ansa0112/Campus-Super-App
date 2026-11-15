@@ -79,6 +79,11 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
 
+            if (itemId == R.id.nav_map) {
+                startActivity(new Intent(HomeActivity.this, TimetableActivity.class));
+                return true;
+            }
+
             if (itemId == R.id.nav_issues) {
                 startActivity(new Intent(HomeActivity.this, ComplaintsActivity.class));
                 return true;

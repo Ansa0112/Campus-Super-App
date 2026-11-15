@@ -53,6 +53,11 @@ public class AdminHomeActivity extends AppCompatActivity {
                     return true;
                 }
 
+                if (itemId == R.id.nav_map) {
+                    startActivity(new Intent(AdminHomeActivity.this, TimetableActivity.class));
+                    return true;
+                }
+
                 if (itemId == R.id.nav_issues) {
                     openComplaints();
                     return true;
