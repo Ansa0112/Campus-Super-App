@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.campussuperapp.announcements.AnnouncementsActivity;
 import com.example.campussuperapp.events.EventsActivity;
@@ -42,6 +43,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Emergency button -> Emergency fragment
         findViewById(R.id.btnEmergency).setOnClickListener(v -> openFragment(new EmergencyFragment()));
+
+        // Upar wala Map button -> Campus map fragment
+        findViewById(R.id.btnMap).setOnClickListener(v -> openMap());
 
         // 1. Verify HomeActivity successfully loaded
         Toast.makeText(this, "HomeActivity Loaded!", Toast.LENGTH_SHORT).show();
@@ -78,11 +82,26 @@ public class HomeActivity extends AppCompatActivity {
 
         bottomNav = bottomNavigation;
 
+        // Fragment se back karne par bar mein wapas Home selected ho jaye
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                bottomNavigation.getMenu().findItem(R.id.nav_home).setChecked(true);
+            }
+        });
+
         // 3. Set Item Selected Listener
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_home) {
+                // Koi fragment khula ho (Map, Contact, Emergency) to band karke Home dikhao
+                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                return true;
+            }
+
+            // Neeche wali bar ka Map -> Campus map fragment
+            if (itemId == R.id.nav_map) {
+                openMap();
                 return true;
             }
 
@@ -149,13 +168,22 @@ public class HomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // after coming back from Events / Issues / Profile, highlight "Home" again
-        if (bottomNav != null) bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+        if (bottomNav != null && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         if (feed != null) feed.stop();       // stop listeners -> no wasted reads / leaks
+    }
+
+    // Map ek hi baar khule (dono buttons baar baar dabane par stack na bane)
+    private void openMap() {
+        Fragment current = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (current instanceof CampusMapFragment) return;
+        openFragment(new CampusMapFragment());
     }
 
     private void openFragment(Fragment fragment) {
