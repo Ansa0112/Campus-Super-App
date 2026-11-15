@@ -178,27 +178,6 @@
                     android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Publish now (off = save as draft)"
-                    android:textColor="@color/ae_text"
-                    android:textSize="15sp" />
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switchPublish"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/tvApprovalNote"
                 android:layout_width="match_parent"

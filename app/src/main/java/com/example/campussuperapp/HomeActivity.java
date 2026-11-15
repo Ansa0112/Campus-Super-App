@@ -20,10 +20,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private HomeFeed feed;          // real announcements + events from Firestore
+    private BottomNavigationView bottomNav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        feed = new HomeFeed(this);
 
         // Keyboard khulne par bottom bar chhupao, band hone par wapas dikhao
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -75,6 +80,8 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
+        bottomNav = bottomNavigation;
+
         // Fragment se back karne par bar mein wapas Home selected ho jaye
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -95,6 +102,11 @@ public class HomeActivity extends AppCompatActivity {
             // Neeche wali bar ka Map -> Campus map fragment
             if (itemId == R.id.nav_map) {
                 openMap();
+                return true;
+            }
+
+            if (itemId == R.id.nav_events) {
+                startActivity(new Intent(HomeActivity.this, EventsActivity.class));
                 return true;
             }
 
@@ -144,6 +156,27 @@ public class HomeActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (feed != null) feed.start();      // start live Firestore listeners
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // after coming back from Events / Issues / Profile, highlight "Home" again
+        if (bottomNav != null && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (feed != null) feed.stop();       // stop listeners -> no wasted reads / leaks
     }
 
     // Map ek hi baar khule (dono buttons baar baar dabane par stack na bane)

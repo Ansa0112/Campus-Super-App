@@ -17,7 +17,6 @@ import com.example.campussuperapp.common.TimeUtils;
 import com.example.campussuperapp.common.UiUtils;
 import com.example.campussuperapp.common.UserSession;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -39,7 +38,6 @@ public class CreateEventActivity extends AppCompatActivity {
     private TextInputLayout tilTitle, tilDescription, tilVenue, tilDate, tilTime;
     private TextInputEditText etTitle, etDescription, etVenue, etDate, etTime, etCapacity;
     private AutoCompleteTextView actCategory;
-    private MaterialSwitch switchPublish;
     private TextView tvFormTitle, tvApprovalNote;
     private MaterialButton btnSave;
 
@@ -63,7 +61,6 @@ public class CreateEventActivity extends AppCompatActivity {
         etTime = findViewById(R.id.etTime);
         etCapacity = findViewById(R.id.etCapacity);
         actCategory = findViewById(R.id.actCategory);
-        switchPublish = findViewById(R.id.switchPublish);
         tvFormTitle = findViewById(R.id.tvFormTitle);
         tvApprovalNote = findViewById(R.id.tvApprovalNote);
         btnSave = findViewById(R.id.btnSave);
@@ -74,7 +71,6 @@ public class CreateEventActivity extends AppCompatActivity {
         actCategory.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                 Constants.EVENT_CATEGORIES));
         actCategory.setText(Constants.EVENT_CATEGORIES[0], false);
-        switchPublish.setChecked(true);
 
         when.set(Calendar.SECOND, 0);
         when.set(Calendar.MILLISECOND, 0);
@@ -137,7 +133,6 @@ public class CreateEventActivity extends AppCompatActivity {
                 etVenue.setText(e.getVenue());
                 if (e.getCategory() != null) actCategory.setText(e.getCategory(), false);
                 etCapacity.setText(e.getCapacity() > 0 ? String.valueOf(e.getCapacity()) : "");
-                switchPublish.setChecked(e.isPublished());
                 if (e.getEventTime() != null) {
                     when.setTime(e.getEventTime());
                     dateSet = true;
@@ -202,7 +197,7 @@ public class CreateEventActivity extends AppCompatActivity {
         e.setCategory(actCategory.getText().toString());
         e.setEventTime(new Date(when.getTimeInMillis()));
         e.setCapacity(capacity);
-        e.setPublished(switchPublish.isChecked());
+        e.setPublished(true);
 
         btnSave.setEnabled(false);
         btnSave.setText("Saving...");
