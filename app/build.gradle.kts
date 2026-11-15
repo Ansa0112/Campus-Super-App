@@ -16,6 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["MAPS_API_KEY"] = "YOUR_API_KEY"
     }
 
     buildTypes {
@@ -47,7 +48,7 @@ dependencies {
     // --- ADD THESE FIREBASE DEPENDENCIES ---
     // Import the Firebase BoM (Bill of Materials)
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
-
+    implementation("com.google.android.gms:play-services-maps:19.2.0")
     // Add the dependency for Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")

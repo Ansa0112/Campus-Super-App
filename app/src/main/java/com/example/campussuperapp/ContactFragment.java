@@ -55,10 +55,16 @@ public class ContactFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Sirf status bar ki jagah chhodo. Keyboard aur bottom nav HomeActivity sambhalti hai.
+        // Adjust top padding for Status bar and bottom padding for Keyboard (IME) / Navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
-            Insets bars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
-            v.setPadding(0, bars.top, 0, 0);
+            Insets statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
+            Insets ime = insets.getInsets(WindowInsetsCompat.Type.ime());
+            Insets navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+
+            int topPadding = statusBars.top;
+            int bottomPadding = Math.max(ime.bottom, navBars.bottom);
+
+            v.setPadding(0, topPadding, 0, bottomPadding);
             return insets;
         });
 
