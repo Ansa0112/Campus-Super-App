@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +34,11 @@ public class MyComplaintsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_complaints);
+
+        ImageView ivBack = findViewById(R.id.ivBack);
+        if (ivBack != null) {
+            ivBack.setOnClickListener(v -> finish());
+        }
 
         complaintsContainer = findViewById(R.id.complaintsContainer);
         tvNoComplaints = findViewById(R.id.tvNoComplaints);
@@ -74,7 +81,7 @@ public class MyComplaintsActivity extends AppCompatActivity {
                     int count = querySnapshot.size();
 
                     tvMyComplaintsCount.setText(
-                            "My Complaints: " + count
+                            "My Complaints (" + count + ")"
                     );
 
                     if (count == 0) {
@@ -99,7 +106,7 @@ public class MyComplaintsActivity extends AppCompatActivity {
                         int score = scoreValue == null
                                 ? 0 : scoreValue.intValue();
 
-                        String dateText = "Date: Pending";
+                        String dateText = "Pending";
 
                         if (document.getTimestamp("createdAt") != null) {
                             Date date = document.getTimestamp(
@@ -160,57 +167,130 @@ public class MyComplaintsActivity extends AppCompatActivity {
             int score,
             String date
     ) {
+        // Outer Card Container
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(24, 24, 24, 24);
+        card.setPadding(dp(16), dp(16), dp(16), dp(16));
 
-        GradientDrawable background = new GradientDrawable();
-        background.setColor(Color.WHITE);
-        background.setCornerRadius(24);
-        background.setStroke(2, Color.rgb(226, 232, 240));
+        GradientDrawable cardBg = new GradientDrawable();
+        cardBg.setColor(Color.WHITE);
+        cardBg.setCornerRadius(dp(16));
+        cardBg.setStroke(dp(1), Color.parseColor("#E2E8F0"));
+        card.setBackground(cardBg);
 
-        card.setBackground(background);
-        card.setElevation(3);
-
-        LinearLayout.LayoutParams cardParams =
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-
-        cardParams.bottomMargin = 24;
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        cardParams.bottomMargin = dp(14);
         card.setLayoutParams(cardParams);
 
-        addText(card, title, 20, "#1E295B", true);
-        addText(card, "Category: " + category, 14, "#475569", false);
-        addText(card, "Severity: " + severity, 14, "#475569", false);
-        addText(card, "Location: " + location, 14, "#475569", false);
-        addText(card, "Priority: " + priority, 16, "#2563EB", true);
-        addText(card, "Status: " + status, 15, "#15803D", true);
-        addText(card, "Score: " + score + "/11", 14, "#475569", false);
-        addText(card, "Description: " + description, 14, "#334155", false);
-        addText(card, date, 12, "#64748B", false);
+        // Header Row inside Card: Title + Status Badge
+        LinearLayout headerRow = new LinearLayout(this);
+        headerRow.setOrientation(LinearLayout.HORIZONTAL);
+        headerRow.setGravity(Gravity.CENTER_VERTICAL);
+        headerRow.setPadding(0, 0, 0, dp(8));
+
+        TextView tvTitle = new TextView(this);
+        tvTitle.setText(title);
+        tvTitle.setTextSize(17);
+        tvTitle.setTextColor(Color.parseColor("#1E295B"));
+        tvTitle.setTypeface(null, Typeface.BOLD);
+        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        titleParams.rightMargin = dp(8);
+        tvTitle.setLayoutParams(titleParams);
+
+        // Status Badge
+        TextView tvStatusBadge = new TextView(this);
+        tvStatusBadge.setText(status);
+        tvStatusBadge.setTextSize(11);
+        tvStatusBadge.setTypeface(null, Typeface.BOLD);
+        tvStatusBadge.setPadding(dp(10), dp(4), dp(10), dp(4));
+
+        GradientDrawable statusBg = new GradientDrawable();
+        statusBg.setCornerRadius(dp(8));
+
+        if (status.equalsIgnoreCase("Resolved")) {
+            statusBg.setColor(Color.parseColor("#DCFCE7")); // Green 100
+            tvStatusBadge.setTextColor(Color.parseColor("#15803D")); // Green 700
+        } else if (status.equalsIgnoreCase("In Progress")) {
+            statusBg.setColor(Color.parseColor("#DBEAFE")); // Blue 100
+            tvStatusBadge.setTextColor(Color.parseColor("#1D4ED8")); // Blue 700
+        } else { // Pending
+            statusBg.setColor(Color.parseColor("#FEF3C7")); // Amber 100
+            tvStatusBadge.setTextColor(Color.parseColor("#D97706")); // Amber 700
+        }
+        tvStatusBadge.setBackground(statusBg);
+
+        headerRow.addView(tvTitle);
+        headerRow.addView(tvStatusBadge);
+        card.addView(headerRow);
+
+        // Details Section
+        addDetailRow(card, "Category:", category);
+        addDetailRow(card, "Severity:", severity);
+        addDetailRow(card, "Location:", location);
+        addDetailRow(card, "Priority:", priority + " (" + score + "/11)");
+
+        // Description
+        TextView tvDescLabel = new TextView(this);
+        tvDescLabel.setText("Description:");
+        tvDescLabel.setTextSize(12);
+        tvDescLabel.setTextColor(Color.parseColor("#64748B"));
+        tvDescLabel.setPadding(0, dp(6), 0, dp(2));
+        card.addView(tvDescLabel);
+
+        TextView tvDescValue = new TextView(this);
+        tvDescValue.setText(description);
+        tvDescValue.setTextSize(13);
+        tvDescValue.setTextColor(Color.parseColor("#334155"));
+        tvDescValue.setPadding(0, 0, 0, dp(8));
+        card.addView(tvDescValue);
+
+        // Footer Divider & Date
+        View divider = new View(this);
+        LinearLayout.LayoutParams divParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(1));
+        divParams.setMargins(0, dp(4), 0, dp(8));
+        divider.setLayoutParams(divParams);
+        divider.setBackgroundColor(Color.parseColor("#F1F5F9"));
+        card.addView(divider);
+
+        TextView tvDate = new TextView(this);
+        tvDate.setText("Submitted: " + date);
+        tvDate.setTextSize(11);
+        tvDate.setTextColor(Color.parseColor("#94A3B8"));
+        card.addView(tvDate);
 
         complaintsContainer.addView(card);
     }
 
-    private void addText(
-            LinearLayout parent,
-            String text,
-            int size,
-            String color,
-            boolean bold
-    ) {
-        TextView textView = new TextView(this);
-        textView.setText(text);
-        textView.setTextSize(size);
-        textView.setTextColor(Color.parseColor(color));
-        textView.setPadding(0, 5, 0, 5);
+    private void addDetailRow(LinearLayout parent, String label, String value) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setPadding(0, dp(2), 0, dp(2));
 
-        if (bold) {
-            textView.setTypeface(null, Typeface.BOLD);
-        }
+        TextView tvLabel = new TextView(this);
+        tvLabel.setText(label);
+        tvLabel.setTextSize(13);
+        tvLabel.setTextColor(Color.parseColor("#64748B"));
+        LinearLayout.LayoutParams labelParams = new LinearLayout.LayoutParams(
+                dp(80), LinearLayout.LayoutParams.WRAP_CONTENT);
+        tvLabel.setLayoutParams(labelParams);
 
-        parent.addView(textView);
+        TextView tvValue = new TextView(this);
+        tvValue.setText(value);
+        tvValue.setTextSize(13);
+        tvValue.setTextColor(Color.parseColor("#0F172A"));
+        tvValue.setTypeface(null, Typeface.BOLD);
+
+        row.addView(tvLabel);
+        row.addView(tvValue);
+        parent.addView(row);
+    }
+
+    private int dp(int value) {
+        return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
     }
 }

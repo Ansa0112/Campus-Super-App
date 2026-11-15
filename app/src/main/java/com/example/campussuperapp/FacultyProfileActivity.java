@@ -16,12 +16,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class FacultyProfileActivity extends AppCompatActivity {
 
     private TextView tvProfileName, tvProfileEmailHeader, tvEmployeeId, tvDepartment, tvEmail;
+    private TextView tvReportedCount, tvOpenCount, tvResolvedCount;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private ListenerRegistration complaintsListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,7 @@ public class FacultyProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_faculty_profile);
 
-        // Window insets padding matching your layout's root view ID ("main")
+        // Window insets padding matching layout's root view ID ("main")
         View rootView = findViewById(R.id.main);
         if (rootView != null) {
             ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
@@ -39,12 +43,17 @@ public class FacultyProfileActivity extends AppCompatActivity {
             });
         }
 
-        // 1. Initialize UI Elements from your XML layout
+        // 1. Initialize UI Elements from XML layout
         tvProfileName = findViewById(R.id.tvProfileName);
         tvProfileEmailHeader = findViewById(R.id.tvProfileEmailHeader);
         tvEmployeeId = findViewById(R.id.tvEmployeeId);
         tvDepartment = findViewById(R.id.tvDepartment);
         tvEmail = findViewById(R.id.tvEmail);
+
+        tvReportedCount = findViewById(R.id.tvReportedCount);
+        tvOpenCount = findViewById(R.id.tvOpenCount);
+        tvResolvedCount = findViewById(R.id.tvResolvedCount);
+
         LinearLayout menuSignOut = findViewById(R.id.menuSignOut);
 
         // 2. Initialize Firebase instances
@@ -54,20 +63,22 @@ public class FacultyProfileActivity extends AppCompatActivity {
         // 3. Load logged-in faculty profile dynamically from Firestore
         loadFacultyProfile();
 
-        //my complaints activity
+        // my complaints activity
         View menuMyComplaints = findViewById(R.id.menuMyComplaints);
+        if (menuMyComplaints != null) {
+            menuMyComplaints.setOnClickListener(v -> {
+                Intent intent = new Intent(
+                        FacultyProfileActivity.this,
+                        MyComplaintsActivity.class
+                );
+                startActivity(intent);
+            });
+        }
 
-        menuMyComplaints.setOnClickListener(v -> {
-            Intent intent = new Intent(
-                    FacultyProfileActivity.this,
-                    MyComplaintsActivity.class
-            );
-            startActivity(intent);
-        });
-        // 4. Handle Sign Out option -> Redirect to Faculty Create Account screen
+        // 4. Handle Sign Out option
         if (menuSignOut != null) {
             menuSignOut.setOnClickListener(v -> {
-                mAuth.signOut(); // Ends active session
+                mAuth.signOut();
                 Intent intent = new Intent(FacultyProfileActivity.this, activity_faculty_create_account.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -83,11 +94,12 @@ public class FacultyProfileActivity extends AppCompatActivity {
             String uid = currentUser.getUid();
             String authEmail = currentUser.getEmail();
 
-            // Display email from Auth session immediately as a fallback/header preview
             if (authEmail != null) {
                 if (tvProfileEmailHeader != null) tvProfileEmailHeader.setText(authEmail);
                 if (tvEmail != null) tvEmail.setText(authEmail);
             }
+
+            listenToComplaintStats(uid);
 
             // Fetch specific user document from Firestore using the faculty's UID
             db.collection("Users").document(uid)
@@ -96,13 +108,11 @@ public class FacultyProfileActivity extends AppCompatActivity {
                         if (task.isSuccessful() && task.getResult() != null) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                // Extract fields stored during faculty registration
                                 String fullName = document.getString("fullName");
                                 String employeeId = document.getString("employeeId");
                                 String department = document.getString("department");
                                 String email = document.getString("email");
 
-                                // Update UI dynamically with fetched data or fallback defaults
                                 if (tvProfileName != null) {
                                     tvProfileName.setText(fullName != null && !fullName.isEmpty() ? fullName : "N/A");
                                 }
@@ -123,11 +133,54 @@ public class FacultyProfileActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            // Redirect to login if no active user session exists
             Toast.makeText(this, "No active session. Redirecting...", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(FacultyProfileActivity.this, activity_faculty_create_account.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void listenToComplaintStats(String uid) {
+        complaintsListener = db.collection("complaints")
+                .whereEqualTo("userId", uid)
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null || querySnapshot == null) {
+                        if (tvReportedCount != null) tvReportedCount.setText("0");
+                        if (tvOpenCount != null) tvOpenCount.setText("0");
+                        if (tvResolvedCount != null) tvResolvedCount.setText("0");
+                        return;
+                    }
+
+                    int totalReported = querySnapshot.size();
+                    int openCount = 0;
+                    int resolvedCount = 0;
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String status = doc.getString("status");
+                        if (status != null && status.equalsIgnoreCase("Resolved")) {
+                            resolvedCount++;
+                        } else {
+                            openCount++;
+                        }
+                    }
+
+                    if (tvReportedCount != null) {
+                        tvReportedCount.setText(String.valueOf(totalReported));
+                    }
+                    if (tvOpenCount != null) {
+                        tvOpenCount.setText(String.valueOf(openCount));
+                    }
+                    if (tvResolvedCount != null) {
+                        tvResolvedCount.setText(String.valueOf(resolvedCount));
+                    }
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (complaintsListener != null) {
+            complaintsListener.remove();
         }
     }
 }
