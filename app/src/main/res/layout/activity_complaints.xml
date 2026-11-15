@@ -12,41 +12,62 @@
     <LinearLayout
         android:id="@+id/complaintsHeader"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#1E295B"
-        android:paddingStart="22dp"
-        android:paddingEnd="22dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="22dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CAMPUS SUPPORT"
-            android:layout_marginTop="20dp"
-            android:textColor="#BFDBFE"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.12" />
+        <!-- Top Bar with Back Arrow and Category Tag -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_back"
+                android:layout_marginTop="40dp"
+                app:tint="#FFFFFF"
+                android:contentDescription="Back"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/ivBack"
+                android:text="CAMPUS SUPPORT"
+                android:textColor="#BFDBFE"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.12" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+
             android:text="Complaints &amp; Issues"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="Report a campus problem so the right team can address it."
             android:textColor="#E2E8F0"
-            android:textSize="14sp"
-            android:lineSpacingExtra="3dp" />
+            android:textSize="13sp"
+            android:lineSpacingExtra="2dp" />
 
     </LinearLayout>
 
