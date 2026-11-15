@@ -40,8 +40,9 @@ public class CampusMapFragment extends Fragment {
     // Har jagah ki position image ke pixels mein (x, y). Image par jahan label chahiye wahan ki
     // x,y yahan likh dein. Naya naam jorna ho to ek line aur add kar dein.
     private static final List<CampusMapView.Spot> SPOTS = Arrays.asList(
-            spot("FUI Campus", 407, 598),
+            spot("IT & SE ", 407, 598),
             spot("Parking", 394, 268),
+            spot("Media Common Room", 204, 381),
             spot("Masjid", 480, 428),
             spot("Boys Gate", 512, 463),
             spot("Basketball Court", 303, 487),

@@ -41,6 +41,10 @@ public class CampusMapView extends View {
         void onSpotClick(Spot spot);
     }
 
+    public interface OnLongPressListener {
+        void onLongPress(float fx, float fy); // image ke andar position (0..1)
+    }
+
     private Bitmap bitmap;
     private final Matrix matrix = new Matrix();
     private final float[] m = new float[9];
@@ -51,6 +55,7 @@ public class CampusMapView extends View {
     private final List<Spot> spots = new ArrayList<>();
     private Spot selected;
     private OnSpotClickListener listener;
+    private OnLongPressListener longPressListener;
 
     private final float density;
     private final Paint bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
@@ -106,6 +111,17 @@ public class CampusMapView extends View {
                 return true;
             }
 
+            // Long press: jis jagah dabaya uske image coordinates bata do (jagah jorne ke liye)
+            @Override
+            public void onLongPress(MotionEvent e) {
+                if (!ready || longPressListener == null) return;
+                Matrix inv = new Matrix();
+                matrix.invert(inv);
+                float[] p = {e.getX(), e.getY()};
+                inv.mapPoints(p);
+                longPressListener.onLongPress(p[0] / bitmap.getWidth(), p[1] / bitmap.getHeight());
+            }
+
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 if (!ready) return false;
@@ -156,6 +172,10 @@ public class CampusMapView extends View {
 
     public void setOnSpotClickListener(OnSpotClickListener l) {
         listener = l;
+    }
+
+    public void setOnLongPressListener(OnLongPressListener l) {
+        longPressListener = l;
     }
 
     public void selectSpot(@Nullable Spot s, boolean zoomIn) {
