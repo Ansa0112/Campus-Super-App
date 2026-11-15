@@ -244,104 +244,161 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- 1. MAIN ACTION: register / cancel (grey when not possible) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="16dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:text="Register now"
+                android:textAllCaps="false"
+                android:textColor="@color/ae_btn_primary_text"
                 android:textSize="16sp"
-                app:backgroundTint="@color/ae_navy"
+                android:textStyle="bold"
+                app:backgroundTint="@color/ae_btn_primary_bg"
                 app:cornerRadius="14dp" />
 
-            <LinearLayout
+            <!-- 2. Helpers -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCalendar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:text="Save to my calendar"
+                android:textColor="@color/ae_navy"
+                android:textSize="15sp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:maxLines="1"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:cornerRadius="14dp"
+                app:backgroundTint="#E8ECF8"
+                app:icon="@drawable/ae_ic_calendar"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconSize="20dp"
+                app:iconTint="@color/ae_navy"
+                app:rippleColor="#331F2A5C" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCalendar"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_weight="1"
-                    android:text="Add to calendar"
-                    android:textColor="@color/ae_navy"
-                    app:cornerRadius="14dp"
-                    app:icon="@drawable/ae_ic_calendar"
-                    app:iconTint="@color/ae_navy" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAttendees"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:text="View attendees"
+                android:textColor="@color/ae_navy"
+                android:textSize="15sp"
+                android:visibility="gone"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:maxLines="1"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:cornerRadius="14dp"
+                app:backgroundTint="#E8ECF8"
+                app:icon="@drawable/ae_ic_people"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconSize="20dp"
+                app:iconTint="@color/ae_navy"
+                app:rippleColor="#331F2A5C" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnAttendees"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:text="Attendees"
-                    android:textColor="@color/ae_navy"
-                    android:visibility="gone"
-                    app:cornerRadius="14dp"
-                    app:icon="@drawable/ae_ic_people"
-                    app:iconTint="@color/ae_navy" />
-            </LinearLayout>
-
-            <!-- Shown only to admin / the faculty who organised it -->
+            <!-- 3. Admin / organiser only -->
             <LinearLayout
                 android:id="@+id/layoutManage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.08"
+                    android:text="MANAGE THIS EVENT"
+                    android:textColor="@color/ae_text_secondary"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApprove"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:text="Approve and publish to students"
+                    android:layout_marginTop="10dp"
+                    android:text="Approve  (show to students)"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp"
                     app:backgroundTint="@color/ae_green"
-                    app:cornerRadius="14dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnPublish"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Make draft"
-                    android:textColor="@color/ae_navy"
-                    app:cornerRadius="14dp" />
+                    app:icon="@drawable/ae_ic_verified"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:iconSize="20dp"
+                    app:iconTint="#FFFFFF"
+                    app:rippleColor="#331F2A5C" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnEdit"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_height="52dp"
                         android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="6dp"
                         android:text="Edit"
-                        app:backgroundTint="@color/ae_navy"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:maxLines="1"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
                         app:cornerRadius="14dp"
-                        app:icon="@drawable/ae_ic_edit" />
+                        app:backgroundTint="@color/ae_navy"
+                        app:icon="@drawable/ae_ic_edit"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconSize="20dp"
+                        app:iconTint="#FFFFFF"
+                        app:rippleColor="#331F2A5C" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnDelete"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="6dp"
+                        android:layout_height="52dp"
                         android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="6dp"
                         android:text="Delete"
-                        app:backgroundTint="@color/ae_red"
+                        android:textColor="#D93B3B"
+                        android:textSize="15sp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:maxLines="1"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
                         app:cornerRadius="14dp"
-                        app:icon="@drawable/ae_ic_delete" />
+                        app:backgroundTint="#FDECEC"
+                        app:icon="@drawable/ae_ic_delete"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconSize="20dp"
+                        app:iconTint="#D93B3B"
+                        app:rippleColor="#331F2A5C" />
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

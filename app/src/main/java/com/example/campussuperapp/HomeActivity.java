@@ -19,10 +19,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private HomeFeed feed;          // real announcements + events from Firestore
+    private BottomNavigationView bottomNav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        feed = new HomeFeed(this);
 
         // Keyboard khulne par bottom bar chhupao, band hone par wapas dikhao
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -71,11 +76,18 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
+        bottomNav = bottomNavigation;
+
         // 3. Set Item Selected Listener
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_home) {
+                return true;
+            }
+
+            if (itemId == R.id.nav_events) {
+                startActivity(new Intent(HomeActivity.this, EventsActivity.class));
                 return true;
             }
 
@@ -125,6 +137,25 @@ public class HomeActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (feed != null) feed.start();      // start live Firestore listeners
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // after coming back from Events / Issues / Profile, highlight "Home" again
+        if (bottomNav != null) bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (feed != null) feed.stop();       // stop listeners -> no wasted reads / leaks
     }
 
     private void openFragment(Fragment fragment) {

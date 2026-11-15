@@ -2,6 +2,7 @@ package com.example.campussuperapp.events;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.campussuperapp.R;
 import com.example.campussuperapp.common.TimeUtils;
@@ -35,7 +37,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView tvCategory, tvTitle, tvDay, tvMonth, tvDateTime, tvVenue, tvOrganizer,
             tvDescription, tvSeats, tvBanner;
     private ProgressBar progressSeats;
-    private MaterialButton btnRegister, btnCalendar, btnAttendees, btnApprove, btnPublish, btnEdit, btnDelete;
+    private MaterialButton btnRegister, btnCalendar, btnAttendees, btnApprove, btnEdit, btnDelete;
     private View layoutManage;
 
     @Override
@@ -62,7 +64,6 @@ public class EventDetailActivity extends AppCompatActivity {
         btnCalendar = findViewById(R.id.btnCalendar);
         btnAttendees = findViewById(R.id.btnAttendees);
         btnApprove = findViewById(R.id.btnApprove);
-        btnPublish = findViewById(R.id.btnPublish);
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
         layoutManage = findViewById(R.id.layoutManage);
@@ -75,8 +76,6 @@ public class EventDetailActivity extends AppCompatActivity {
         btnCalendar.setOnClickListener(v -> addToCalendar());
         btnAttendees.setOnClickListener(v -> showAttendees());
         btnApprove.setOnClickListener(v -> update("approved", true, "Event approved"));
-        btnPublish.setOnClickListener(v -> update("published", !current.isPublished(),
-                current.isPublished() ? "Moved to drafts" : "Published"));
         btnEdit.setOnClickListener(v -> {
             Intent i = new Intent(this, CreateEventActivity.class);
             i.putExtra(CreateEventActivity.EXTRA_ID, id);
@@ -153,7 +152,7 @@ public class EventDetailActivity extends AppCompatActivity {
         layoutManage.setVisibility(manage ? View.VISIBLE : View.GONE);
         btnAttendees.setVisibility(manage ? View.VISIBLE : View.GONE);
         btnApprove.setVisibility(session.isAdmin() && !e.isApproved() ? View.VISIBLE : View.GONE);
-        btnPublish.setText(e.isPublished() ? "Make draft" : "Publish");
+        btnAttendees.setText("View attendees (" + e.getRegisteredCount() + ")");
 
         updateRegisterButton();
     }
@@ -161,6 +160,8 @@ public class EventDetailActivity extends AppCompatActivity {
     private void updateRegisterButton() {
         if (current == null) return;
         boolean registered = current.isRegistered(session.uid);
+        // default = navy (greys out by itself when disabled); "cancel" state = red
+        btnRegister.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.ae_btn_primary_bg));
 
         if (!current.isApproved() || !current.isPublished()) {
             btnRegister.setText("Not open for registration");
@@ -169,7 +170,8 @@ public class EventDetailActivity extends AppCompatActivity {
             btnRegister.setText("Event ended");
             btnRegister.setEnabled(false);
         } else if (registered) {
-            btnRegister.setText("Cancel registration");
+            btnRegister.setText("Cancel my registration");
+            btnRegister.setBackgroundTintList(ColorStateList.valueOf(0xFFD93B3B));
             btnRegister.setEnabled(!busy);
         } else if (current.isFull()) {
             btnRegister.setText("Event full");

@@ -31,7 +31,7 @@ public class AnnouncementDetailActivity extends AppCompatActivity {
     private TextView tvCategory, tvTitle, tvAuthor, tvTime, tvDescription, tvAudience, tvViews, tvBanner;
     private ImageView ivVerified;
     private View layoutActions;
-    private MaterialButton btnApprove, btnPin, btnPublish, btnEdit, btnDelete;
+    private MaterialButton btnApprove, btnPin, btnEdit, btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,6 @@ public class AnnouncementDetailActivity extends AppCompatActivity {
         layoutActions = findViewById(R.id.layoutActions);
         btnApprove = findViewById(R.id.btnApprove);
         btnPin = findViewById(R.id.btnPin);
-        btnPublish = findViewById(R.id.btnPublish);
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
         ImageButton btnBack = findViewById(R.id.btnBack);
@@ -65,8 +64,6 @@ public class AnnouncementDetailActivity extends AppCompatActivity {
         btnApprove.setOnClickListener(v -> update("approved", true, "Announcement approved"));
         btnPin.setOnClickListener(v -> update("pinned", !current.isPinned(),
                 current.isPinned() ? "Unpinned" : "Pinned to top"));
-        btnPublish.setOnClickListener(v -> update("published", !current.isPublished(),
-                current.isPublished() ? "Moved to drafts" : "Published"));
         btnEdit.setOnClickListener(v -> {
             Intent i = new Intent(this, CreateAnnouncementActivity.class);
             i.putExtra(CreateAnnouncementActivity.EXTRA_ID, id);
@@ -143,7 +140,6 @@ public class AnnouncementDetailActivity extends AppCompatActivity {
         btnApprove.setVisibility(session.isAdmin() && !a.isApproved() ? View.VISIBLE : View.GONE);
         btnPin.setVisibility(session.isAdmin() ? View.VISIBLE : View.GONE);
         btnPin.setText(a.isPinned() ? "Unpin" : "Pin to top");
-        btnPublish.setText(a.isPublished() ? "Make draft" : "Publish");
     }
 
     private void update(String field, Object value, final String successMessage) {

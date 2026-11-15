@@ -6,6 +6,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.campussuperapp.announcements.AnnouncementsActivity;
+import com.example.campussuperapp.announcements.CreateAnnouncementActivity;
+import com.example.campussuperapp.events.CreateEventActivity;
+import com.example.campussuperapp.events.EventsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,6 +21,9 @@ public class AdminHomeActivity extends AppCompatActivity {
     private TextView tvPendingComplaints;
     private TextView tvResolvedComplaints;
     private TextView tvAnnouncementCount;
+
+    private HomeFeed feed;                       // latest announcement + upcoming events (live)
+    private BottomNavigationView bottomNav;
 
     private FirebaseFirestore db;
     private ListenerRegistration complaintsListener;
@@ -36,6 +43,16 @@ public class AdminHomeActivity extends AppCompatActivity {
 
         findViewById(R.id.btnReviewComplaints).setOnClickListener(v -> openComplaints());
 
+        feed = new HomeFeed(this);
+        findViewById(R.id.btnNewAnnouncement).setOnClickListener(v ->
+                startActivity(new Intent(this, CreateAnnouncementActivity.class)));
+        findViewById(R.id.btnNewEvent).setOnClickListener(v ->
+                startActivity(new Intent(this, CreateEventActivity.class)));
+        findViewById(R.id.tvSeeAllAnnouncements).setOnClickListener(v ->
+                startActivity(new Intent(this, AnnouncementsActivity.class)));
+        findViewById(R.id.tvSeeAllEvents).setOnClickListener(v ->
+                startActivity(new Intent(this, EventsActivity.class)));
+
         setupBottomNavigation();
 
         listenToComplaintStats();
@@ -44,12 +61,18 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     private void setupBottomNavigation() {
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
+        bottomNav = bottomNavigation;
         if (bottomNavigation != null) {
             bottomNavigation.setSelectedItemId(R.id.nav_home);
             bottomNavigation.setOnItemSelectedListener(item -> {
                 int itemId = item.getItemId();
 
                 if (itemId == R.id.nav_home) {
+                    return true;
+                }
+
+                if (itemId == R.id.nav_events) {
+                    startActivity(new Intent(AdminHomeActivity.this, EventsActivity.class));
                     return true;
                 }
 
@@ -117,6 +140,24 @@ public class AdminHomeActivity extends AppCompatActivity {
                     }
                     tvAnnouncementCount.setText(String.valueOf(querySnapshot.size()));
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (feed != null) feed.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (bottomNav != null) bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (feed != null) feed.stop();
     }
 
     @Override

@@ -30,7 +30,7 @@ public class CreateAnnouncementActivity extends AppCompatActivity {
     private TextInputLayout tilTitle, tilDescription;
     private TextInputEditText etTitle, etDescription;
     private AutoCompleteTextView actCategory, actAudience;
-    private MaterialSwitch switchPin, switchPublish;
+    private MaterialSwitch switchPin;
     private TextView tvFormTitle, tvApprovalNote;
     private MaterialButton btnSave;
 
@@ -49,7 +49,6 @@ public class CreateAnnouncementActivity extends AppCompatActivity {
         actCategory = findViewById(R.id.actCategory);
         actAudience = findViewById(R.id.actAudience);
         switchPin = findViewById(R.id.switchPin);
-        switchPublish = findViewById(R.id.switchPublish);
         tvFormTitle = findViewById(R.id.tvFormTitle);
         tvApprovalNote = findViewById(R.id.tvApprovalNote);
         btnSave = findViewById(R.id.btnSave);
@@ -63,7 +62,6 @@ public class CreateAnnouncementActivity extends AppCompatActivity {
                 Constants.AUDIENCES));
         actCategory.setText(Constants.ANNOUNCEMENT_CATEGORIES[0], false);
         actAudience.setText(Constants.AUDIENCES[0], false);
-        switchPublish.setChecked(true);
 
         tvFormTitle.setText(editId == null ? "New announcement" : "Edit announcement");
         btnSave.setEnabled(false); // until we know the user's role
@@ -100,7 +98,6 @@ public class CreateAnnouncementActivity extends AppCompatActivity {
                 if (a.getCategory() != null) actCategory.setText(a.getCategory(), false);
                 if (a.getAudience() != null) actAudience.setText(a.getAudience(), false);
                 switchPin.setChecked(a.isPinned());
-                switchPublish.setChecked(a.isPublished());
             }
 
             @Override public void onDeleted() { finish(); }
@@ -127,7 +124,7 @@ public class CreateAnnouncementActivity extends AppCompatActivity {
         a.setCategory(actCategory.getText().toString());
         a.setAudience(actAudience.getText().toString());
         a.setPinned(switchPin.isChecked());
-        a.setPublished(switchPublish.isChecked());
+        a.setPublished(true);
 
         btnSave.setEnabled(false);
         btnSave.setText("Saving...");
