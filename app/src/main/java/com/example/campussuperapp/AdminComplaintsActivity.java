@@ -38,6 +38,11 @@ public class AdminComplaintsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_complaints);
 
+        ImageView ivBack = findViewById(R.id.ivBack);
+        if (ivBack != null) {
+            ivBack.setOnClickListener(v -> finish());
+        }
+
         tvCount = findViewById(R.id.tvAdminComplaintsCount);
         tvMessage = findViewById(R.id.tvAdminComplaintsMessage);
         complaintsContainer = findViewById(R.id.adminComplaintsContainer);
