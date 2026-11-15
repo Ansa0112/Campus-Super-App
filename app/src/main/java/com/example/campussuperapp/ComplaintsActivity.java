@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,13 @@ public class ComplaintsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaints);
+
+
+        ImageView ivBack = findViewById(R.id.ivBack);
+
+        ivBack.setOnClickListener(v -> {
+            finish();
+        });
 
         // Connect UI elements
         etTitle = findViewById(R.id.etComplaintTitle);

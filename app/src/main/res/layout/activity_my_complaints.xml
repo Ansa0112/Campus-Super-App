@@ -1,39 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/myComplaintsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F8FAFC">
 
-    <!-- Navy header -->
+    <!-- Header -->
     <LinearLayout
+        android:id="@+id/myComplaintsHeader"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#1E295B"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="22dp">
+
+        <!-- Top Bar with Back Arrow and Tag -->
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_back"
+                app:tint="#FFFFFF"
+                android:layout_marginTop="40dp"
+                android:contentDescription="Back"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/ivBack"
+                android:text="STUDENT PORTAL"
+                android:textColor="#BFDBFE"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.12" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tvMyComplaintsHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:text="My Complaints"
-            android:layout_marginTop="30dp"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Track your submitted campus issues"
-            android:textColor="#DCE6FF"
-            android:textSize="14sp" />
+            android:layout_marginTop="4dp"
+            android:text="Track and view status updates for your reported campus issues"
+            android:textColor="#E2E8F0"
+            android:textSize="13sp"
+            android:lineSpacingExtra="2dp" />
 
     </LinearLayout>
 
@@ -43,12 +79,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="12dp"
         android:text="My Complaints: 0"
         android:textColor="#1E295B"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <!-- Scrollable complaint list -->
@@ -57,9 +93,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="16dp">
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,9 +107,10 @@
                 android:id="@+id/tvNoComplaints"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="0dp"
                 android:gravity="center"
                 android:padding="20dp"
+                android:background="@drawable/bg_complaint_card"
                 android:text="You haven't submitted any complaints yet."
                 android:textColor="#64748B"
                 android:textSize="14sp"

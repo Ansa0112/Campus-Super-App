@@ -134,17 +134,17 @@
                     android:paddingVertical="14dp">
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3" android:textColor="#1E295B" android:textSize="18sp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/tvComplaintsCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#1E295B" android:textSize="18sp" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Complaints" android:textColor="#64748B" android:textSize="11sp"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" android:textColor="#D97706" android:textSize="18sp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/tvOpenCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#D97706" android:textSize="18sp" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Open" android:textColor="#64748B" android:textSize="11sp"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" android:textColor="#16A34A" android:textSize="18sp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/tvResolvedCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#16A34A" android:textSize="18sp" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Resolved" android:textColor="#64748B" android:textSize="11sp"/>
                     </LinearLayout>
 

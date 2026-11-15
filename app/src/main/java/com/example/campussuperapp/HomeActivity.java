@@ -11,6 +11,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.campussuperapp.announcements.AnnouncementsActivity;
+import com.example.campussuperapp.events.EventsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,6 +44,27 @@ public class HomeActivity extends AppCompatActivity {
 
         // 1. Verify HomeActivity successfully loaded
         Toast.makeText(this, "HomeActivity Loaded!", Toast.LENGTH_SHORT).show();
+
+        // Click listeners for Quick Access items & See All
+        View btnEvents = findViewById(R.id.btnEvents);
+        if (btnEvents != null) {
+            btnEvents.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, EventsActivity.class)));
+        }
+
+        View tvSeeAllEvents = findViewById(R.id.tvSeeAllEvents);
+        if (tvSeeAllEvents != null) {
+            tvSeeAllEvents.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, EventsActivity.class)));
+        }
+
+        View tvSeeAllAnnouncements = findViewById(R.id.tvSeeAllAnnouncements);
+        if (tvSeeAllAnnouncements != null) {
+            tvSeeAllAnnouncements.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, AnnouncementsActivity.class)));
+        }
+
+        View btnReport = findViewById(R.id.btnReport);
+        if (btnReport != null) {
+            btnReport.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, ComplaintsActivity.class)));
+        }
 
         // 2. Find Bottom Navigation View safely
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
