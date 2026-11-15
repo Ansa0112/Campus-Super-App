@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.campussuperapp.announcements.AnnouncementsActivity;
 import com.example.campussuperapp.events.EventsActivity;
@@ -20,6 +23,20 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Keyboard khulne par bottom bar chhupao, band hone par wapas dikhao
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+            findViewById(R.id.bottomNavigation)
+                    .setVisibility(imeVisible ? View.GONE : View.VISIBLE);
+            return insets;
+        });
+
+        // "?" button -> Contact Us fragment
+        findViewById(R.id.btnHelp).setOnClickListener(v -> openFragment(new ContactFragment()));
+
+        // Emergency button -> Emergency fragment
+        findViewById(R.id.btnEmergency).setOnClickListener(v -> openFragment(new EmergencyFragment()));
 
         // 1. Verify HomeActivity successfully loaded
         Toast.makeText(this, "HomeActivity Loaded!", Toast.LENGTH_SHORT).show();
@@ -108,5 +125,13 @@ public class HomeActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    private void openFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
